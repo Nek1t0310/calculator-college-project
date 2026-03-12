@@ -1,6 +1,6 @@
 #include<iostream>
 #include<string>
-#include<cmath>
+//#include<cmath>
 using namespace std;
 
 string InputInt() { // функция обработки ввода
@@ -20,7 +20,7 @@ string InputInt() { // функция обработки ввода
 
 		bool prove = true;
 
-		for (int i = 0; i < s.length(); i++) {
+		for (int i = 0; i < s.length(); i++) { // обработка допустимого алфавита
 			if (s[i] != '1' && s[i] != '0') {
 				prove = false;
 				break;
@@ -34,14 +34,13 @@ string InputInt() { // функция обработки ввода
 	}
 }
 
-void decimal_research() { // функция перевода из двоичного числа в десятичное
+void decimal_research() { // функция перевода из двоичного числа в десятичное, вход: строковая переменная, выход: целочисленная переменная
 	cout << "Введите число: ";
 	string num = InputInt();
-	cout << "Ваше число: " << num << "\n";
 
 	reverse(num.begin(), num.end());
 	long long result = 0;
-	long long go_of_two = 1;
+	long long go_of_two = 1; // переменная аккумулятор степени двоичного числа при переводе в десятичное
 
 	for (int i = 0; i < num.length(); i++) { // цикл перевода числа
 		if (num[i] == '1') {
@@ -49,7 +48,7 @@ void decimal_research() { // функция перевода из двоично
 		}
 		go_of_two *= 2;
 	}
-	cout << "\nРезультат операции: " << result;
+	cout << "\nЧисло в десятичной системе: " << result;
 	/*
 	for (int i = 0; i < num.length(); i++) {
 		char a = num[i];
@@ -57,13 +56,12 @@ void decimal_research() { // функция перевода из двоично
 
 		result += (b * pow(2, i));
 	}
-	*/
+	*/ // not blazing code, because pow
 }
 
 int main() {
 	int x;
 	cout << "Допустимый алфавит: 0 и 1" << endl;
-	cout << "Введите число: ";
 	decimal_research();
 
 	while (true) {
@@ -76,7 +74,6 @@ int main() {
 			break;
 		}
 		if (x == 0) {
-			cout << "Введите число: ";
 			decimal_research();
 		}
 	}
