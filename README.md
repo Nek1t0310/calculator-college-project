@@ -2,9 +2,16 @@
 Simple, universal calculator, that can calculate in different number system
 
 # now we have:
-- check message by alphabet
-- conversation from decimal to binary sestem
-- conversation from binary to decimal system
+suppord systems:
+- Binary(2)
+- Octal(8)
+- Decimal(10)
+- Hexdecimal
+
+possibilities:
+- check input
+- user error defence
+- translation between systems
 
 # attention 1: 
 Now you can see cycles while in each cpp file, this is explained by the fact that I submit these files as labs work to the teacher, they require: communication between the program and the user
