@@ -6,7 +6,7 @@ suppord systems:
 - Binary(2)
 - Octal(8)
 - Decimal(10)
-- Hexdecimal
+- Hexdecimal(16)
 
 possibilities:
 - check input
