@@ -2,9 +2,8 @@
 #include<string>
 using namespace std;
 
-// валидация ввода десятичного числа
-// разрешённый алфавит: 0-9
-string InputInt() { 
+// валидация ввода разных чисел(2, 8, 10, 16)
+string InputCheck(int base) {
 	while (true) {
 
 		if (cin.peek() == '\n') {
@@ -18,118 +17,43 @@ string InputInt() {
 			cout << "\nПустой ввод, повторите: ";
 			continue;
 		}
-
 		bool prove = true;
 
-		for (char c : s) {
-			if (!isdigit(c)) { // проверка допустимого для этой системы алфавита 
-				prove = false;
-				break;
+		if (base == 2) {
+			for (int i = 0; i < s.length(); i++) { // обработка допустимого для двоичной системы алфавита
+				if (s[i] != '1' && s[i] != '0') {
+					prove = false;
+					break;
+				}
+			}
+		}
+		else if (base == 8) {
+			for (int i = 0; i < s.length(); i++) { // обработка допустимого для восьмеричной системы алфавита
+				if (!(s[i] >= '0' && s[i] <= '7')) {
+					prove = false;
+					break;
+				}
+			}
+		}
+		else if (base == 10) {
+			for (char c : s) {
+				if (!isdigit(c)) { // проверка допустимого для десятичной системы алфавита 
+					prove = false;
+					break;
+				}
+			}
+		}
+		else if (base == 16) {
+			for (int i = 0; i < s.length(); i++) { // обработка допустимого для шестнадцатиричной системы алфавита
+				if (!isxdigit(s[i])) {
+					prove = false;
+					break;
+				}
+				s[i] = toupper(s[i]);
 			}
 		}
 		if (!prove) {
-			cout << "Введите число в десятичной системе: ";
-			continue;
-		}
-		
-		return s;
-	}
-}
-
-// валидация ввода двоичного числа
-// разрешённый алфавит: 0, 1
-string InputBin() {
-	while (true) {
-
-		if (cin.peek() == '\n') {
-			cin.ignore();
-		}
-
-		string s;
-		getline(cin, s);
-
-		if (s.empty()) {
-			cout << "\nПустой ввод, повторите: ";
-			continue;
-		}
-
-		bool prove = true;
-
-		for (int i = 0; i < s.length(); i++) { // обработка допустимого для этой системы алфавита
-			if (s[i] != '1' && s[i] != '0') {
-				prove = false;
-				break;
-			}
-		}
-		if (!prove) {
-			cout << "Введите число в двоичной системе: ";
-			continue;
-		}
-		return s;
-	}
-}
-
-// валидация ввода восьмеричного числа
-// разрешённый алфавит: 0-7
-string InputOctal() {
-	while (true) {
-
-		if (cin.peek() == '\n') {
-			cin.ignore();
-		}
-
-		string s;
-		getline(cin, s);
-
-		if (s.empty()) {
-			cout << "\nПустой ввод, повторите: ";
-			continue;
-		}
-
-		bool prove = true;
-
-		for (int i = 0; i < s.length(); i++) { // обработка допустимого для этой системы алфавита
-			if (!(s[i] >= '0' && s[i] <= '7')) {
-				prove = false;
-				break;
-			}
-		}
-		if (!prove) {
-			cout << "Введите число в восьмеричной системе: ";
-			continue;
-		}
-		return s;
-	}
-}
-
-// валидация шестнадцатиричного числа
-// разрешённый алфавит: A-F, 0-9
-string InputHex() {
-	while (true) {
-
-		if (cin.peek() == '\n') {
-			cin.ignore();
-		}
-
-		string s;
-		getline(cin, s);
-
-		if (s.empty()) {
-			cout << "\nПустой ввод, повторите: ";
-			continue;
-		}
-
-		bool prove = true;
-
-		for (int i = 0; i < s.length(); i++) { // обработка допустимого для этой системы алфавита
-			if (!isxdigit(s[i])) {
-				prove = false;
-				break;
-			}
-						s[i] = toupper(s[i]);
-		}
-		if (!prove) {
-			cout << "Введите число в шестнадцатиричной системе: ";
+			cout << "Введите число в " << base <<"-й системе: ";
 			continue;
 		}
 		return s;
@@ -164,107 +88,70 @@ int system_check() {
 	}
 }
 
-// функция перевода из двоичного числа в десятичное 
-//вход: строковая переменная, выход: целочисленная переменная
-long long decimal_research_from_binary(string num) { 
+// перевод из любой системы(2, 8, 10, 16) в десятичную(2)
+// вход: строковая переменная, выход: целочисленная переменная
+long long decimal_research_from_any(int base, string num) {
 
 	reverse(num.begin(), num.end());
 	long long result = 0;
-	long long go_of_two = 1; // переменная аккумулятор степени двоичного числа 
+	long long go_of_any = 1; // переменная аккумулятор степени двоичного числа 
 
-	for (int i = 0; i < num.length(); i++) { // цикл перевода числа
-		if (num[i] == '1') {
-			result += go_of_two;
+	if (base == 2) {
+		for (int i = 0; i < num.length(); i++) { // цикл перевода числа в двоичную систему
+			if (num[i] == '1') {
+				result += go_of_any;
+			}
+			go_of_any *= base;
 		}
-		go_of_two *= 2;
 	}
-	//cout << "\nЧисло в десятичной системе: " << result << "\n";
-	return result;
-}
-
-// функция перевода из восьмеричного числа в десятичное 
-//вход: строковая переменная, выход: целочисленная переменная
-long long decimal_research_from_octal(string num) { 
-
-	reverse(num.begin(), num.end());
-	long long result = 0;
-	long long go_of_eight = 1; // переменная аккумулятор степени восьмеричного числа
-
-	for (int i = 0; i < num.length(); i++) {
-		long long digit = num[i] - '0';
-		result += digit * go_of_eight;
-		go_of_eight *= 8; // умножение на степень соответствующую разряду числа
-	}
-
-	//cout << "Число в десятичной системе: " << result << "\n";
-	return result;
-}
-
-// функция перевода из шестнадцатиричного числа в десятичное 
-//вход: строковая переменная, выход: целочисленная переменная
-long long decimal_research_from_hex(string num) { 
-
-	reverse(num.begin(), num.end());
-	long long result = 0;
-	long long go_of_hex = 1;
-
-	for (int i = 0; i < num.length(); i++) {
-		long long digit;
-		if (isdigit(num[i])) {
-			digit = num[i] - '0';
-		} else {
-			digit = num[i] - 'A' + 10;
+	else if (base == 8) {
+		for (int i = 0; i < num.length(); i++) {
+			long long digit = num[i] - '0';
+			result += digit * go_of_any;
+			go_of_any *= base; // умножение на степень соответствующую разряду числа
 		}
-		result += digit * go_of_hex;
-		go_of_hex *= 16;
 	}
-
+	else if (base == 16) {
+		for (int i = 0; i < num.length(); i++) {
+			long long digit;
+			if (isdigit(num[i])) {
+				digit = num[i] - '0';
+			}
+			else {
+				digit = num[i] - 'A' + 10;
+			}
+			result += digit * go_of_any;
+			go_of_any *= base;
+		}
+	}
 	return result;
-}
+} 
 
+// перевод из типа данных string в long long
 long long to_long_long(string num) {
 	return stoll(num);
 }
 
-// перевод в двоичную систему
-void binary_research(long long num) { 
-	string number_01 = "";
+// перевод с десятичной системы(10) во все остальные(2, 8, 10, 16)
+void any_research(long long num_, int base) {
+	string number = "";
 
-	do {
-		number_01 += to_string(num % 2);
-		num /= 2;
-	} while (num > 0);
+	if (base == 2 || base == 8 || base == 10) {
+		do {
+			number += to_string(num_ % base);
+			num_ /= base;
+		} while (num_ > 0);
+	}
+	else if (base == 16) {
+		const char* digits = "0123456789ABCDEF";
 
-	reverse(number_01.begin(), number_01.end()); // расположение элементов: от старшего бита к младшему
-	cout << "Это число в двоичной системе: " << number_01;
-}
-
-// перевод в восьмеричную систему
-void octal_research(long long num) { 
-	string result = "";
-
-	do {
-		result += to_string(num % 8);
-		num /= 8;
-		//cout << num << endl;
-	} while (num > 0);
-
-	reverse(result.begin(), result.end());
-	cout << "Это число в восьмеричной системе: " << result;
-}
-
-// перевод в шестнадцатеричную систему
-void hex_research_blazing(long long num) {
-	string result = "";
-	const char* digits = "0123456789ABCDEF";
-
-	do {
-		result += digits[num % 16];
-		num /= 16;
-	} while (num > 0);
-
-	reverse(result.begin(), result.end());
-	cout << "Это число в шестнадцатеричной системе: " << result;
+		do {
+			number += digits[num_ % base];
+			num_ /= base;
+		} while (num_ > 0);
+	}
+	reverse(number.begin(), number.end()); // расположение элементов: от старшего элемента к младшему
+	cout << "Это число в " << base << "-й системе: " << number;
 }
 
 int main() {
@@ -279,43 +166,30 @@ int main() {
 		int M = system_check();
 		cout << "Вы выбрали систему: " << M << endl;
 
-		string num;
+		string number;
 		long long decimal_num = 0;
 		cout << "Введите число в " << M << "-й системе: ";
 
 		// перевод числа из указанной системы в десятичную, некий мост для связи входной системы и конечной
-		if (M == 2) {											 
-			num = InputBin();									 
-			decimal_num = decimal_research_from_binary(num);     
-		}														 
-		else if (M == 8) {										 
-			num = InputOctal();									 
-			decimal_num = decimal_research_from_octal(num);		 
-		}														 
-		else if (M == 10) {										
-			num = InputInt();									 
-			decimal_num = stoll(num);							 
-		}														 
-		else if (M == 16) {										 
-			num = InputHex();									 
-			decimal_num = decimal_research_from_hex(num);
-		}														 
+		if (M == 2 || M == 8 || M == 16) {
+			number = InputCheck(M);
+			decimal_num = decimal_research_from_any(M, number);
+		}
+		else if (M == 10) {
+			number = InputCheck(M);
+			decimal_num = to_long_long(number);
+		}
 
 		cout << "Введите конечную систему: ";
 		int N = system_check();
 		cout << "Вы выбрали систему: " << N << endl;
 
-		if (N == 2) {
-			binary_research(decimal_num);
-		}
-		else if (N == 8) {
-			octal_research(decimal_num);
+		// перевод из десятичной в конечную
+		if (N == 2 || N == 8 || N == 16) {
+			any_research(decimal_num, N);
 		}
 		else if (N == 10) {
 			cout << "Это число в " << N << "-й системе: " << decimal_num << endl;
-		}
-		else if (N == 16) {
-			hex_research_blazing(decimal_num);
 		}
 		cout << "\nВы хотите завершить программу? \n";
 		cout << "1 - да, 0 - нет\n";
