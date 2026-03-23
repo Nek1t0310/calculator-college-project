@@ -135,21 +135,13 @@ long long to_long_long(string num) {
 // перевод с десятичной системы(10) во все остальные(2, 8, 10, 16)
 void any_research(long long num_, int base) {
 	string number = "";
+	const char* digits = "0123456789ABCDEF";
 
-	if (base == 2 || base == 8 || base == 10) {
-		do {
-			number += to_string(num_ % base);
-			num_ /= base;
-		} while (num_ > 0);
-	}
-	else if (base == 16) {
-		const char* digits = "0123456789ABCDEF";
-
-		do {
-			number += digits[num_ % base];
-			num_ /= base;
-		} while (num_ > 0);
-	}
+	do {
+		number += digits[num_ % base];
+		num_ /= base;
+	} while (num_ > 0);
+	
 	reverse(number.begin(), number.end()); // расположение элементов: от старшего элемента к младшему
 	cout << "Это число в " << base << "-й системе: " << number;
 }
