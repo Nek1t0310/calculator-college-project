@@ -47,7 +47,12 @@ int main() {
 		int x;
 		cout << "Вы хотите завершить программу?\n";
 		cout << "1 - да, 0 - нет\n";
-		cin >> x;
+		
+		if (!(cin >> x) || (x > 1 || x < 0)) {
+			cin.clear();
+			cin.ignore(1000, '\n');
+			continue;
+		}
 		if (x == 1) {
 			cout << "Хорошего дня!" << endl;
 			break;
