@@ -186,7 +186,17 @@ int main() {
 		cout << "\nВы хотите завершить программу? \n";
 		cout << "1 - да, 0 - нет\n";
 		int x;
-		cin >> x;
+
+		while (true) {
+			if (!(cin >> x) || (x > 1 || x < 0)) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "Введите либо 0, либо 1: ";
+				continue;
+			} else { 
+				break; 
+			}
+		}
 		if (x == 1) {
 			cout << "Хорошего дня!" << endl;
 			break;
